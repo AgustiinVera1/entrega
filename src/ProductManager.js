@@ -1,12 +1,12 @@
 //const fs = require('fs'); //commonJS (node trae está por default)
 import fs from 'fs'; // ES module 
 const path = 'ProductFile.json';
-
+//import { existsSync, promises} from 'fs';
 
 class ProductManager {
     async getProducts(queryObj) {
-        console.log('queryObj', queryObj);
-        const {limit} = queryObj;
+        //console.log('queryObj', queryObj);
+        const { limit } = queryObj;
         try {
             if (fs.existsSync(path)) {
                 const productsFile = await fs.promises.readFile(path, "utf-8");
@@ -22,23 +22,16 @@ class ProductManager {
     async addProduct(product) {
         try {
             const products = await this.getProducts({});
-            const existingProduct = products.find(p => p.code === product.code);
-            if (existingProduct) {
-                existingProduct.title = product.title;
-                existingProduct.description = product.description;
-                existingProduct.price = product.price;
-                existingProduct.thumbnail = product.thumbnail;
-                existingProduct.stock = product.stock;
+            let id;
+            if (!products.length) {
+                id = 1;
             } else {
-                let id;
-                if (!products.length) {
-                    id = 1;
-                } else {
-                    id = products[products.length - 1].id + 1;
-                }
-                products.push({ id, ...product });
+                id = products[products.length - 1].id + 1;
             }
+            const newProduct = { id, ...product};
+            products.push(newProduct);
             await fs.promises.writeFile(path, JSON.stringify(products));
+            return newProduct;
         } catch (error) {
             return error;
         }
@@ -58,16 +51,17 @@ class ProductManager {
         }
     }
 
-    async updateProduct(idProduct, cargarProduct) {
+    async updateProduct(idProduct, obj) {
         try {
             const products = await this.getProducts({});
             const index = products.findIndex(u => u.id === idProduct);
-            if (index !== -1) {
-                products[index] = { ...products[index], ...cargarProduct };
-            } else {
-                return error;
+            if (index === -1) {
+                return null;
             }
-            await fs.promises.writeFile(path, JSON.stringify(products[index]));
+            const updateProduct = { ...products[index], ...obj };
+            products.splice(index, 1, updateProduct);
+            await fs.promises.writeFile(path, JSON.stringify(products));
+            return updateProduct;
         } catch (error) {
             return error;
         }
@@ -77,8 +71,12 @@ class ProductManager {
     async deleteProduct(id) {
         try {
             const products = await this.getProducts({});
-            const NewArrProducts = products.filter(u => u.id !== id);
-            await fs.promises.writeFile(path, JSON.stringify(NewArrProducts));
+            const product = products.find((u) => u.id === id);
+            if (product) {
+                const NewArrProducts = products.filter((u) => u.id !== id);
+                await fs.promises.writeFile(path, JSON.stringify(NewArrProducts));
+            }
+            return product;
         } catch (error) {
             return error;
         }
@@ -167,20 +165,30 @@ const product10 = {
     code: 1010,
     stock: 100,
 }
+const product11 = {
+    title: "title",
+    description: "des",
+    price: 90,
+    thumbnail: "img",
+    code: 1212,
+    stock: 3232,
+    category: "category"
+}
 
-/*
+
 async function test() {
-    const manager1 = new ProductManager();
-    await manager1.addProduct(product1);
-    await manager1.addProduct(product2);
-    await manager1.addProduct(product3);
-    await manager1.addProduct(product4);
-    await manager1.addProduct(product5);
-    await manager1.addProduct(product6);
-    await manager1.addProduct(product7);
-    await manager1.addProduct(product8);
-    await manager1.addProduct(product9);
-    await manager1.addProduct(product10);
+    //const manager1 = new ProductManager();
+    //await manager1.addProduct(product1);
+    //await manager1.addProduct(product2);
+    //await manager1.addProduct(product3);
+    //await manager1.addProduct(product4);
+    //await manager1.addProduct(product5);
+    //await manager1.addProduct(product6);
+    //await manager1.addProduct(product7);
+    //await manager1.addProduct(product8);
+    //await manager1.addProduct(product9);
+    //await manager1.addProduct(product10);
+    //await manager1.addProduct(product11);
 
 
     //const products = await manager1.getProducts();
@@ -193,7 +201,6 @@ async function test() {
 
     //await manager1.updateProduct(2,{title: "iphone", price: 9999});
 }
-
 test()
-*/
+
 export const manager1 = new ProductManager();
