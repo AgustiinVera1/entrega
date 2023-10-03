@@ -70,4 +70,18 @@ router.put('/:id', async (req, res) => {
     }
 })
 
+router.post('/signup', async (req, res) => {
+    const { nombre, contraseña } = req.body;
+    if (!nombre, !contraseña) {
+        res.status(400).json({ message: 'Falta algun dato' });
+    }
+    try {
+        const response = await manager1.addProduct(req.body);
+        res.redirect(`/api/views/user/${response.id}`);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+})
+
+
 export default router;

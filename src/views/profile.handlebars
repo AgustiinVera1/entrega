@@ -1,0 +1,6 @@
+{{#if userProfile}}
+<h3>Bienvenido {{userProfile.nombre}} {{userProfile.apellido}}</h3>
+<p>Tu perfil y email es: {{userProfile.email}}</p>
+{{else}}
+<p>Hubo un error durando el registro</p>
+{{/if}}
