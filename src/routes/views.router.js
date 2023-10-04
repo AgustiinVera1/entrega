@@ -53,5 +53,8 @@ router.get('/user/:idUser', async (req, res) => {
     res.render('profile', { userProfile, style: 'first' });
 })
 
+router.get('/home', async (req,res)=>{
+    res.render('home');
+})
 
 export default router; 
