@@ -36,37 +36,38 @@ const httpServer = app.listen(8080, () => {
     console.log('escuchando puerto 8080')
 });
 const socketServer = new Server(httpServer);
+
 //opcion 1:
-socketServer.on('connection', (socket)=> {
-	console.log('cliente conectado');
-	try {
-		socket.on('product', async (product)  => {
-			await manager1.addProduct(product);
-		});
-	} catch (error) {
-		return error;
-	}
-	try {
-		socket.on('id', async (id)  => {
-			await manager1.deleteProduct(+id);
-		})
-	} catch (error) {
-		return error;
-	}
+socketServer.on('connection', (socket) => {
+    console.log('Cliente conectado');
+    
+    socket.on('product', async (product) => {
+        await manager1.addProduct(product);
+    });
+    
+    socket.on('id', async (id) => {
+        await manager1.deleteProduct(+id);
+    });
+    
 });
 
 //opcion 2:
 /*
-socketServer.on('connection', (socket) => {
-    console.log('Cliente conectado');
-
-    socket.on('product', async (product) => {
-        await manager1.addProduct(product);
-    });
-
-    socket.on('id', async (id) => {
-        await manager1.deleteProduct(+id);
-    });
-
+socketServer.on('connection', (socket)=> {
+    console.log('cliente conectado');
+    try {
+        socket.on('product', async (product)  => {
+            await manager1.addProduct(product);
+        });
+    } catch (error) {
+        return error;
+    }
+    try {
+        socket.on('id', async (id)  => {
+            await manager1.deleteProduct(+id);
+        })
+    } catch (error) {
+        return error;
+    }
 });
 */

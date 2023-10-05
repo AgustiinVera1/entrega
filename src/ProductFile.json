@@ -41,5 +41,23 @@
         "apellido": "Verasa",
         "email": "agussvera@hotmail.com",
         "contraseña": "ffffffffff"
+    },
+    {
+        "id": 6,
+        "title": "pc",
+        "description": "gamingpc",
+        "code": "3123",
+        "price": "400",
+        "stock": "10",
+        "category": "gamer"
+    },
+    {
+        "id": 7,
+        "title": "pc",
+        "description": "gamingpc",
+        "code": "3123",
+        "price": "400",
+        "stock": "10",
+        "category": "gamer"
     }
 ]
