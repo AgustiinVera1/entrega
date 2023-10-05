@@ -1,0 +1,36 @@
+<h1>Lista de productos en tiempo real</h1>
+
+<form id="addProduct">
+    Title: <input type="text" name="title" id="title">;
+    Description: <input type="text" name="description" id="description">;
+    Code: <input type="number" name="code" id="code">;
+    Price: <input type="number" name="price" id="price">;
+    Stock: <input type="number" name="stock" id="stock">; <br> <br>
+    Category: <input type="text" name="category" id="category">;
+    <button type="submit">agregar productos</button>
+</form>
+<br> <br> 
+<form id="deleteProductId">
+    <input type="number" placeholder="ingresar id" id="id">;
+    <input type="submit" value="Eliminar producto">;
+</form>
+
+<ul>
+    {{#each listProduct}}
+    <br>
+    <br>
+    <li>ID: {{this.id}}</li>
+    <li>Title: {{this.title}}</li>
+    <li>Description: {{this.description}}</li>
+    <li>Code: {{this.code}}</li>
+    <li>Price: {{this.price}}</li>
+    <li>Stock: {{this.stock}}</li>
+    <li>Category: {{this.category}}</li>
+    {{/each}}
+</ul>
+
+
+
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/index.js"></script>

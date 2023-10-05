@@ -28,18 +28,45 @@ const __dirname = dirname(__filename);
 // handlebars
 import { engine } from "express-handlebars";
 app.engine("handlebars", engine());
-app.set('views', __dirname + '/views');
 app.set('view engine', 'handlebars');
+app.set('views', __dirname + '/views');
 
-
-
-
-
+//socket
 const httpServer = app.listen(8080, () => {
     console.log('escuchando puerto 8080')
 });
-
 const socketServer = new Server(httpServer);
-socketServer.on('connection', (socket)=>{
-    
-})
+//opcion 1:
+socketServer.on('connection', (socket)=> {
+	console.log('cliente conectado');
+	try {
+		socket.on('product', async (product)  => {
+			await manager1.addProduct(product);
+		});
+	} catch (error) {
+		return error;
+	}
+	try {
+		socket.on('id', async (id)  => {
+			await manager1.deleteProduct(+id);
+		})
+	} catch (error) {
+		return error;
+	}
+});
+
+//opcion 2:
+/*
+socketServer.on('connection', (socket) => {
+    console.log('Cliente conectado');
+
+    socket.on('product', async (product) => {
+        await manager1.addProduct(product);
+    });
+
+    socket.on('id', async (id) => {
+        await manager1.deleteProduct(+id);
+    });
+
+});
+*/

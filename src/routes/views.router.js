@@ -53,8 +53,22 @@ router.get('/user/:idUser', async (req, res) => {
     res.render('profile', { userProfile, style: 'first' });
 })
 
-router.get('/home', async (req,res)=>{
-    res.render('home');
-})
+router.get('/home', async (req, res) => {
+    try {
+        const products = await manager1.getProducts({});
+        res.render('home', {listProduct: products});
+    } catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+});
+
+router.get('/realtimeproducts', async (req,res)=>{
+    try {
+        const products = await manager1.getProducts({});
+        res.render('realTimeProducts',{listProduct: products});
+    } catch (error) {
+        res.status(500).json({message: error.message});
+    }
+});
 
 export default router; 
